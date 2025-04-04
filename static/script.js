@@ -14,7 +14,7 @@ let currentTrack = 0;
 window.pywebview.api.get_playlist().then(response => {
 	playlist = JSON.parse(response);
 	if (playlist.length > 0) {
-		document.getElementById("track-info").value = "Loaded" + playlist.length + "songs.";
+		document.getElementById("track-info").value = "Loaded " + playlist.length + " songs.";
 	} else {
 		document.getElementById("track-info").value = "no mp3 files found.select a folder.";
 	}
@@ -24,7 +24,7 @@ function openFolder() {
 	window.pywebview.api.open_folder().then(response => {
 		playlist = JSON.parse(response);
 		if (playlist.length > 0) {
-			document.getElementById("track-info").value = "Loaded" + playlist.length + "songs.";
+			document.getElementById("track-info").value = "Loaded " + playlist.length + " songs.";
 		} else {
 			document.getElementById("track-info").value = "no mp3 files found.";
 		}
