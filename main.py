@@ -5,6 +5,8 @@ from tkinter import filedialog
 import json
 
 config_file = "static/config.json"
+playlist_file = "static/playlist.json"
+
 
 class API:
     def __init__(self):
@@ -14,8 +16,17 @@ class API:
         self.is_playing = False
         self.music_dir = self.load_config()
 
-        if self.music_dir:
+        if os.path.exists(playlist_file):
+            with open(playlist_file, "r") as pf:
+                self.playlist = json.load(pf)
+                self.current_track = 0
+        elif self.music_dir:
             self.load_playlist(self.music_dir)
+
+
+    def save_playlist(self):
+        with open(playlist_file , "w") as pf:
+            json.dump(self.playlist, pf)
 
     def load_config(self):
         if os.path.exists(config_file):
@@ -31,6 +42,7 @@ class API:
     def load_playlist(self,folder):
         self.playlist = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".mp3")]
         self.current_track = 0
+        self.save_playlist()
 
     def open_folder(self):
         folder = filedialog.askdirectory()
@@ -77,4 +89,4 @@ class API:
 api = API() 
 webview.create_window("mp3 player", "static/ui.html", width=450, height=600,js_api=api)
 
-webview.start()
+webview.start(debug=True)

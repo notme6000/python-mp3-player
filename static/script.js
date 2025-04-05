@@ -11,20 +11,25 @@ button.addEventListener("click", () => {
 let playlist = [];
 let currentTrack = 0;
 
-window.pywebview.api.get_playlist().then(response => {
-	playlist = JSON.parse(response);
-	if (playlist.length > 0) {
-		document.getElementById("track-info").value = "Loaded " + playlist.length + " songs.";
-	} else {
-		document.getElementById("track-info").value = "no mp3 files found.select a folder.";
-	}
+window.pywebview.ready().then(() => {
+	window.pywebview.api.get_playlist().then(response => {
+		playlist = JSON.parse(response);
+		if (playlist.length > 0) {
+			currentTrack = 0	
+			document.getElementById("track-info").value = getTrackName(currentTrack);			
+			updateTrackInfo();
+		} else {
+			document.getElementById("track-info").value = "no mp3 files found.select a folder.";
+		}
+	});
 });
-
 function openFolder() {
 	window.pywebview.api.open_folder().then(response => {
 		playlist = JSON.parse(response);
 		if (playlist.length > 0) {
 			document.getElementById("track-info").value = "Loaded " + playlist.length + " songs.";
+			currentTrack = 0;
+			updateTrackInfo();
 		} else {
 			document.getElementById("track-info").value = "no mp3 files found.";
 		}
@@ -33,7 +38,10 @@ function openFolder() {
 
 function playPause() {
 	window.pywebview.api.play_pause().then(isPlaying => {
-		document.getElementById("track-info").value = isPlaying ? "playing...": "paused";
+		console.log("playlist : ", playlist);
+		console.log("currenttrack: ", currentTrack);
+		console.log("track name : ", getTrackName(currentTrack));
+		document.getElementById("track-info").value = isPlaying ? "playing : " + getTrackName(currentTrack) : "paused";
 	});
 }
 
@@ -52,15 +60,17 @@ function prevTrack() {
 }
 
 function getTrackName(index) {
-	return playlist.length > 0 ? playlist[index].split('/').pop() : "no track playing";
+	if (playlist.length > 0 && playlist[index]) {
+		return playlist[index].split('/').pop();
+	}
+	return "damn no track playing";
 }
 
 function updateTrackInfo() {
 	let trackInfo = document.getElementById("track-info");
 
-	if (playlist.length > 0) {
-		let currentTrack = playlist[currentTrackIndex];
-		let trackName = currentTrack.split('/').pop();
+	if (playlist.length > 0 && playlist[currentTrack]) {
+		const trackName = playlist[currentTrack].split('/').pop();
 		trackInfo.value = trackName;
 	} else { 
 		trackInfo.value = "no mp3 file found. Select a folder";
