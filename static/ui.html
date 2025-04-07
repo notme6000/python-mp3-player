@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MP3 Player Design</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
 </head>
 
-<body>
+<body class="tokyonight">
     <div class="player">
-        <div><input type=text class="screen" id="track-info" readonly></div>
+        <div class="custom-form"><input type=text class="screen custom-input" id="track-info" readonly></div>
         <div class="controls">
             <div class="side-btn" onclick="prevTrack()">
                 <img src=backward.png width=90px height=90px>
@@ -24,6 +24,13 @@
         </div>
     </div>
     <div class="bottom-btn" onclick="openFolder()"><img src=folder.png width=40px height=40px></div>
+    <div class="theme-toggle custom-form">
+        <select class="custom-select" id="theme-toggle" onchange="changeTheme(this.value)">
+            <option value="tokyonight">Tokyonight</option>
+            <option value="gruvbox">Gruvbox</option>
+            <option value="dracula">Dracula</option>
+        </select>
+    </div>
     <script src="script.js"></script>
 </body>
 

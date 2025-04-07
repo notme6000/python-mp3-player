@@ -76,3 +76,8 @@ function updateTrackInfo() {
 		trackInfo.value = "no mp3 file found. Select a folder";
 	}
 }
+
+function changeTheme(theme) {
+    document.body.className = theme;
+}
+
