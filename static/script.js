@@ -10,6 +10,8 @@ button.addEventListener("click", () => {
 
 let playlist = [];
 let currentTrack = 0;
+let isShuffle = false;
+let isRepeat = false;
 
 
 function initializePlayer() {
@@ -100,7 +102,27 @@ function updateTrackInfo() {
     }
 }
 
-function changeTheme(theme) {
-    document.body.className = theme;
+function toggleShuffle() {
+	isShuffle = !isShuffle;
+
+	const btn = document.querySelector('.shuffle-btn');
+	btn.classList.toggle("pressed", isShuffle); // Apply/remove class
+
+	// Notify Python backend
+	window.pywebview.api.toggle_shuffle().then(status => {
+		console.log("Shuffle mode is now", status ? "ON" : "OFF");
+	});
+}
+
+function toggleRepeat() {
+	isRepeat= !isRepeat;
+
+	const btn = document.querySelector('.repeat-btn');
+	btn.classList.toggle("pressed", isRepeat); // Apply/remove class
+
+	// Notify Python backend
+	window.pywebview.api.toggle_repeat().then(status => {
+		console.log("Repeat mode is now", status ? "ON" : "OFF");
+	});
 }
 

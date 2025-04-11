@@ -88,6 +88,58 @@ body {
 	cursor: pointer;
 }
 
+.shuffle-btn {
+	position: absolute;
+	top: 250px;
+	left: 40px;
+	width: 60px;
+	height: 40px;
+	border-radius: 20%;
+	background: linear-gradient(135deg, #1a1b26, #292e42);
+	color: #c0caf5;
+	background-color: #c0caf5;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.2s, box-shadow 0.2s;
+	border: none;
+}
+
+.shuffle-btn.pressed {
+	background: rgba(26, 127, 108, 10);
+	color: #c0caf5;
+	/* Green to indicate it's ON */
+}
+
+.repeat-btn {
+	position: absolute;
+	top: 250px;
+	left: 120px;
+	width: 60px;
+	height: 40px;
+	border-radius: 20%;
+	background: linear-gradient(135deg, #1a1b26, #292e42);
+	color: #c0caf5;
+	background-color: #c0caf5;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.2s, box-shadow 0.2s;
+	border: none;
+}
+
+.repeat-btn.pressed {
+	background: rgba(26, 127, 108, 10);
+	color: #c0caf5;
+	/* Green to indicate it's ON */
+}
+
 #bg-video {
 	position: fixed;
 	top: 0;

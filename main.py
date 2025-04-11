@@ -5,6 +5,7 @@ from tkinter import filedialog
 import json
 import threading
 import time
+import random
 
 config_file = "static/config.json"
 playlist_file = "static/playlist.json"
@@ -17,6 +18,8 @@ class API:
         self.current_track = 0
         self.is_playing = False
         self.music_dir = self.load_config()
+        self.shuffle = False
+        self.repeat = False
         threading.Thread(target=self.track_watcher, daemon=True).start()
 
 
@@ -27,6 +30,18 @@ class API:
                 self.current_track = 0
         elif self.music_dir:
             self.load_playlist(self.music_dir)
+
+
+    def toggle_shuffle(self):
+        self.shuffle = not self.shuffle
+        print("shuffle is on")
+        return self.shuffle
+
+    def toggle_repeat(self):
+        self.repeat= not self.repeat
+        print("repeat is on")
+        return self.repeat
+
 
     def track_watcher(self):
         while True:
@@ -80,12 +95,24 @@ class API:
 
     def next_track(self):
         if self.playlist:
-            self.current_track = (self.current_track + 1) % len(self.playlist)
+            if self.shuffle:
+                next_index = self.current_track
+                while next_index == self.current_track and len(self.playlist) > 1:
+                    next_index = random.randint(0, len(self.playlist) - 1)
+                self.current_track = next_index
+            elif self.repeat:
+                pass
+            else:
+                self.current_track = (self.current_track + 1) % len(self.playlist)
+
+
+
             pygame.mixer.music.load(self.playlist[self.current_track])
             pygame.mixer.music.play()
             self.is_playing = True
 
             webview.windows[0].evaluate_js(f'updateCurrentTrack({self.current_track})')
+
         return self.current_track
 
     def prev_track(self):
@@ -102,4 +129,4 @@ class API:
 api = API() 
 webview.create_window("mp3 player", "static/ui.html", width=450, height=600,js_api=api)
 
-webview.start(debug=True)
+webview.start(debug=False)
