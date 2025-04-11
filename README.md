@@ -3,7 +3,6 @@
 A lightweight MP3 player built with **Python** using **PyWebview** for the backend and **HTML/CSS/JavaScript** for the frontend. Designed to be minimal and easy to use — just open a folder and start listening to your MP3 collection.
 
 ![Screenshot](mp3-player.png)  
-*Add your UI screenshot here*
 
 ---
 
