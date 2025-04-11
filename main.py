@@ -3,6 +3,8 @@ import os
 import pygame
 from tkinter import filedialog
 import json
+import threading
+import time
 
 config_file = "static/config.json"
 playlist_file = "static/playlist.json"
@@ -15,6 +17,9 @@ class API:
         self.current_track = 0
         self.is_playing = False
         self.music_dir = self.load_config()
+        threading.Thread(target=self.track_watcher, daemon=True).start()
+
+
 
         if os.path.exists(playlist_file):
             with open(playlist_file, "r") as pf:
@@ -23,6 +28,12 @@ class API:
         elif self.music_dir:
             self.load_playlist(self.music_dir)
 
+    def track_watcher(self):
+        while True:
+            if self.is_playing and not pygame.mixer.music.get_busy():
+                time.sleep(1)
+                self.next_track()
+            time.sleep(0.5)
 
     def save_playlist(self):
         with open(playlist_file , "w") as pf:
@@ -73,6 +84,8 @@ class API:
             pygame.mixer.music.load(self.playlist[self.current_track])
             pygame.mixer.music.play()
             self.is_playing = True
+
+            webview.windows[0].evaluate_js(f'updateCurrentTrack({self.current_track})')
         return self.current_track
 
     def prev_track(self):
@@ -84,7 +97,7 @@ class API:
         return self.current_track
 
     def get_playlist(self):
-        return json.dumps(self.playlist)
+        return json.dumps({"playlist": self.playlist,"current_track":self.current_track})
 
 api = API() 
 webview.create_window("mp3 player", "static/ui.html", width=450, height=600,js_api=api)
