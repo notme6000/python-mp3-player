@@ -23,6 +23,10 @@ class API:
         threading.Thread(target=self.track_watcher, daemon=True).start()
 
 
+        os.makedirs("static", exist_ok=True)
+        if not os.path.exists(config_file):
+            with open(config_file, "w") as f:
+                json.dump({"music_dir": ""},f)
 
         if os.path.exists(playlist_file):
             with open(playlist_file, "r") as pf:
@@ -30,6 +34,8 @@ class API:
                 self.current_track = 0
         elif self.music_dir:
             self.load_playlist(self.music_dir)
+        else:
+            self.playlist = []
 
 
     def toggle_shuffle(self):
