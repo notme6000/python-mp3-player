@@ -7,6 +7,8 @@ import threading
 import time
 import random
 
+from webview import guilib
+
 config_file = "static/config.json"
 playlist_file = "static/playlist.json"
 
@@ -133,6 +135,6 @@ class API:
         return json.dumps({"playlist": self.playlist,"current_track":self.current_track})
 
 api = API() 
-webview.create_window("mp3 player", "static/ui.html", width=450, height=600,js_api=api)
+webview.create_window("mp3 player", "static/ui.html", width=450, height=600,transparent=True,js_api=api)
 
 webview.start(debug=False)
